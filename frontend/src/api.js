@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api' });
+// frontend/src/api.js
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || '/api'
+});
 
 // Injeta token JWT em toda requisicao
 api.interceptors.request.use((config) => {
@@ -26,5 +29,7 @@ export const fmtMoeda = (v) =>
 
 export const fmtData = (d) =>
   d ? new Date(d).toLocaleDateString('pt-BR') : '-';
+
+
 
 export default api;
