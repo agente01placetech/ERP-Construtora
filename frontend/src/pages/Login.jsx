@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <div className="login-wrap">
       <div className="login-card">
-        <h1>Sienge<span>-MERN</span></h1>
+        <h1><span>Constru-ERP</span></h1>
         <p className="sub">Gestão essencial de obras — faça login para continuar</p>
         <form onSubmit={entrar}>
           <div className="campo">

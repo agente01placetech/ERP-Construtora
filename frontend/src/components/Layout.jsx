@@ -20,7 +20,7 @@ export default function Layout() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="logo">Sienge<span>-MERN</span></div>
+        <div className="logo"><span>Contru-ERP</span></div>
         <nav>
           {menu.map((m) => (
             <NavLink key={m.to} to={m.to} end={m.fim}
