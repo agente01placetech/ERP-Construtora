@@ -20,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 // Rotas publicas e protegidas
+app.use('/auth', authRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/obras', obraRoutes);
