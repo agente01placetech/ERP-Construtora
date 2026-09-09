@@ -1,8 +1,15 @@
 import axios from 'axios';
 
 // frontend/src/api.js
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const apiBaseUrl = configuredApiUrl
+  ? configuredApiUrl.replace(/\/$/, '').endsWith('/api')
+    ? configuredApiUrl.replace(/\/$/, '')
+    : `${configuredApiUrl.replace(/\/$/, '')}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api'
+  baseURL: apiBaseUrl
 });
 
 // Injeta token JWT em toda requisicao
