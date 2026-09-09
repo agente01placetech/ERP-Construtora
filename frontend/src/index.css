@@ -1,0 +1,116 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primaria: #1e5f8a;
+  --primaria-escura: #154a6e;
+  --destaque: #f39c12;
+  --fundo: #f4f6f9;
+  --texto: #2c3e50;
+  --sucesso: #27ae60;
+  --perigo: #e74c3c;
+  --aviso: #f39c12;
+  --borda: #dde3ea;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  font-size: 14px;
+}
+
+/* Layout */
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 230px; background: var(--primaria-escura); color: #fff;
+  display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0;
+}
+.sidebar .logo { padding: 20px 18px; font-size: 18px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.1); }
+.sidebar .logo span { color: var(--destaque); }
+.sidebar nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.sidebar nav a {
+  display: block; padding: 11px 18px; color: #cfdce6; text-decoration: none;
+  border-left: 3px solid transparent; transition: .15s;
+}
+.sidebar nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+.sidebar nav a.ativo { background: rgba(255,255,255,.12); color: #fff; border-left-color: var(--destaque); }
+.sidebar .user-box { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,.1); font-size: 12px; }
+.sidebar .user-box button {
+  margin-top: 8px; width: 100%; padding: 7px; background: var(--destaque); color: #154a6e;
+  border: none; border-radius: 4px; cursor: pointer; font-weight: 600;
+}
+
+.conteudo { flex: 1; margin-left: 230px; padding: 24px 28px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.topbar h1 { font-size: 22px; color: var(--primaria-escura); }
+
+/* Cards e tabelas */
+.card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 18px; }
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.kpi { background: #fff; border-radius: 8px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); border-left: 4px solid var(--primaria); }
+.kpi .rotulo { font-size: 12px; color: #7f8c9b; text-transform: uppercase; letter-spacing: .5px; }
+.kpi .valor { font-size: 24px; font-weight: 700; margin-top: 6px; color: var(--primaria-escura); }
+.kpi.positivo { border-left-color: var(--sucesso); }
+.kpi.negativo { border-left-color: var(--perigo); }
+.kpi.alerta { border-left-color: var(--aviso); }
+
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--borda); }
+th { background: #eef2f6; font-size: 12px; text-transform: uppercase; color: #5a6b7a; }
+tr:hover td { background: #f8fafc; }
+
+/* Formularios */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.campo { display: flex; flex-direction: column; gap: 5px; }
+.campo label { font-size: 12px; font-weight: 600; color: #5a6b7a; }
+input, select, textarea {
+  padding: 9px 11px; border: 1px solid var(--borda); border-radius: 5px; font-size: 14px;
+  font-family: inherit; background: #fff;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primaria); }
+
+.btn {
+  padding: 9px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;
+  font-weight: 600; transition: .15s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primario { background: var(--primaria); color: #fff; }
+.btn-primario:hover { background: var(--primaria-escura); }
+.btn-destaque { background: var(--destaque); color: #154a6e; }
+.btn-perigo { background: var(--perigo); color: #fff; }
+.btn-sucesso { background: var(--sucesso); color: #fff; }
+.btn-linha { background: transparent; color: var(--primaria); border: 1px solid var(--primaria); }
+.btn-mini { padding: 5px 10px; font-size: 12px; }
+
+.badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.badge.planejamento, .badge.rascunho, .badge.pendente { background: #ecf0f1; color: #5a6b7a; }
+.badge.em_andamento, .badge.ativo { background: #d5f0e0; color: #1e7e45; }
+.badge.pausada, .badge.suspenso, .badge.atrasado { background: #fde8d0; color: #b9770e; }
+.badge.concluida, .badge.encerrado, .badge.pago, .badge.aprovado { background: #d5f0e0; color: #1e7e45; }
+.badge.rejeitado { background: #fadbd8; color: #b03a2e; }
+
+.barra-progresso { background: #ecf0f1; border-radius: 10px; height: 8px; overflow: hidden; width: 120px; }
+.barra-progresso > div { background: var(--primaria); height: 100%; }
+
+.filtros { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: flex-end; }
+.erro { color: var(--perigo); font-size: 13px; margin-top: 8px; }
+.vazio { text-align: center; padding: 30px; color: #95a5a6; }
+
+/* Login */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #154a6e, #1e5f8a); }
+.login-card { background: #fff; padding: 36px; border-radius: 10px; width: 360px; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+.login-card h1 { color: var(--primaria-escura); margin-bottom: 4px; }
+.login-card h1 span { color: var(--destaque); }
+.login-card p.sub { color: #7f8c9b; margin-bottom: 22px; font-size: 13px; }
+.login-card .campo { margin-bottom: 14px; }
+.login-card .btn { width: 100%; justify-content: center; padding: 11px; }
+
+.modal-fundo { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { background: #fff; border-radius: 10px; padding: 24px; width: 92%; max-width: 640px; max-height: 90vh; overflow-y: auto; }
+.modal h2 { margin-bottom: 16px; color: var(--primaria-escura); font-size: 18px; }
+.modal-acoes { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+@media (max-width: 768px) {
+  .sidebar { width: 64px; }
+  .sidebar .logo, .sidebar nav a span.txt, .sidebar .user-box .nome { display: none; }
+  .conteudo { margin-left: 64px; padding: 16px; }
+}

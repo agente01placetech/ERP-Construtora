@@ -1,0 +1,33 @@
+import dotenv from 'dotenv';
+import connectDB from './config/db.js';
+import User from './models/User.js';
+import Cliente from './models/Cliente.js';
+import Obra from './models/Obra.js';
+
+dotenv.config();
+await connectDB();
+
+// Limpar (opcional)
+// await User.deleteMany({});
+// await Cliente.deleteMany({});
+// await Obra.deleteMany({});
+
+// Usuario admin padrao
+const adminExiste = await User.findOne({ email: 'admin@sienge.local' });
+if (!adminExiste) {
+  await User.create({ nome: 'Administrador', email: 'admin@sienge.local', senha: 'admin123', role: 'admin' });
+  console.log('✅ Admin criado: admin@sienge.local / admin123');
+} else {
+  console.log('ℹ️ Admin ja existe');
+}
+
+// Dados de exemplo
+if ((await Cliente.countDocuments()) === 0) {
+  const c1 = await Cliente.create({ nome: 'Construtora Alpha Ltda', documento: '12.345.678/0001-90', email: 'contato@alpha.com', telefone: '(11) 3333-1111', cidade: 'Sao Paulo', uf: 'SP' });
+  const c2 = await Cliente.create({ nome: 'Joao da Silva', documento: '123.456.789-00', email: 'joao@email.com', telefone: '(21) 99999-2222', cidade: 'Rio de Janeiro', uf: 'RJ' });
+  await Obra.create({ nome: 'Edificio Residencial Vista Alegre', cliente: c1._id, status: 'em_andamento', valorOrcamento: 2500000, percentualConclusao: 35, dataInicio: new Date(2026, 0, 15), dataPrevisaoFim: new Date(2027, 5, 30), cidade: 'Sao Paulo', uf: 'SP', responsavel: 'Eng. Maria Souza' });
+  await Obra.create({ nome: 'Reforma Casa Joao', cliente: c2._id, status: 'planejamento', valorOrcamento: 180000, percentualConclusao: 0, cidade: 'Rio de Janeiro', uf: 'RJ', responsavel: 'Eng. Pedro Alves' });
+  console.log('✅ Dados de exemplo criados');
+}
+
+console.log('🎉 Seed concluido. Pressione Ctrl+C para sair.');
