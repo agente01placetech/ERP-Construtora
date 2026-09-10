@@ -49,7 +49,7 @@ export default function Layout() {
         </div>
         <nav aria-label="Navegação principal">
           {menu.map((m) => (
-            <NavLink key={m.to} to={m.to} end={m.fim} className={({ isActive }) => `item-menu${isActive ? ' ativo' : ''}`}>
+            <NavLink key={m.to} to={m.to} end={m.fim} title={m.texto} className={({ isActive }) => `item-menu${isActive ? ' ativo' : ''}`}>
               <span className="menu-icono"><Icone nome={m.icone} /></span>
               <span className="txt">{m.texto}</span>
             </NavLink>
@@ -68,6 +68,10 @@ export default function Layout() {
         </div>
       </aside>
       <main className="conteudo">
+        <div className="workspace-meta">
+          <span className="workspace-label">PAINEL OPERACIONAL</span>
+          <span className="workspace-status"><i /> Sistema online</span>
+        </div>
         <Outlet />
       </main>
     </div>
