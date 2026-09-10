@@ -43,6 +43,7 @@ export default function Layout() {
         <div className="logo">
           <div className="logo-marca" aria-hidden="true"><span /></div>
           <div className="logo-copy">
+            <span className="logo-name">Constru<em>ERP</em></span>
             <span className="logo-tag">gestão de obras</span>
           </div>
         </div>
