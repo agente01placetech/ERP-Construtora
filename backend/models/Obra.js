@@ -13,7 +13,7 @@ const obraSchema = new mongoose.Schema({
     enum: ['planejamento', 'em_andamento', 'pausada', 'concluida'],
     default: 'planejamento'
   },
-  valorOrcamento: { type: Number, default: 0 },
+  valorOrcamento: { type: Number, default: 0, min: 0 },
   percentualConclusao: { type: Number, default: 0, min: 0, max: 100 },
   dataInicio: Date,
   dataPrevisaoFim: Date,

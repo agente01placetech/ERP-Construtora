@@ -1,6 +1,7 @@
 import express from 'express';
 import Cliente from '../models/Cliente.js';
-import { protect } from '../middleware/auth.js';
+import { protect, adminOnly } from '../middleware/auth.js';
+import { pick } from '../utils/fields.js';
 
 const router = express.Router();
 router.use(protect);
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/clientes
 router.post('/', async (req, res) => {
   try {
-    const doc = await Cliente.create(req.body);
+    const doc = await Cliente.create(pick(req.body, ['nome', 'documento', 'email', 'telefone', 'endereco', 'cidade', 'uf', 'observacoes']));
     res.status(201).json(doc);
   } catch (err) { res.status(400).json({ error: err.message }); }
 });
@@ -33,14 +34,14 @@ router.post('/', async (req, res) => {
 // PUT /api/clientes/:id
 router.put('/:id', async (req, res) => {
   try {
-    const doc = await Cliente.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const doc = await Cliente.findByIdAndUpdate(req.params.id, pick(req.body, ['nome', 'documento', 'email', 'telefone', 'endereco', 'cidade', 'uf', 'observacoes']), { new: true, runValidators: true });
     if (!doc) return res.status(404).json({ error: 'Nao encontrado' });
     res.json(doc);
   } catch (err) { res.status(400).json({ error: err.message }); }
 });
 
 // DELETE /api/clientes/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminOnly, async (req, res) => {
   try {
     const doc = await Cliente.findByIdAndDelete(req.params.id);
     if (!doc) return res.status(404).json({ error: 'Nao encontrado' });

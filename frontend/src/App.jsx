@@ -11,7 +11,8 @@ import Financeiro from './pages/Financeiro.jsx';
 import Materiais from './pages/Materiais.jsx';
 
 function RotaProtegida({ children }) {
-  const { user } = useAuth();
+  const { user, carregandoSessao } = useAuth();
+  if (carregandoSessao) return <div className="vazio">Validando sessao...</div>;
   return user ? children : <Navigate to="/login" replace />;
 }
 

@@ -13,10 +13,16 @@ await connectDB();
 // await Obra.deleteMany({});
 
 // Usuario admin padrao
-const adminExiste = await User.findOne({ email: 'admin@sienge.local' });
+const adminEmail = process.env.ADMIN_EMAIL;
+const adminSenha = process.env.ADMIN_PASSWORD;
+if (!adminEmail || !adminSenha || adminSenha.length < 8) {
+  throw new Error('ADMIN_EMAIL e ADMIN_PASSWORD com pelo menos 8 caracteres sao obrigatorios para o seed');
+}
+
+const adminExiste = await User.findOne({ email: adminEmail.toLowerCase() });
 if (!adminExiste) {
-  await User.create({ nome: 'Administrador', email: 'admin@sienge.local', senha: 'admin123', role: 'admin' });
-  console.log('✅ Admin criado: admin@sienge.local / admin123');
+  await User.create({ nome: 'Administrador', email: adminEmail.toLowerCase(), senha: adminSenha, role: 'admin' });
+  console.log(`Admin criado: ${adminEmail}`);
 } else {
   console.log('ℹ️ Admin ja existe');
 }

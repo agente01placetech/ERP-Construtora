@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api.js';
 
 const AuthContext = createContext(null);
@@ -26,6 +26,22 @@ function salvarSessao(data) {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(lerUsuarioSalvo);
+  const [carregandoSessao, setCarregandoSessao] = useState(Boolean(localStorage.getItem('token')));
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) return;
+    api.get('/auth/me')
+      .then(({ data }) => {
+        setUser(data.user || null);
+        if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+      })
+      .finally(() => setCarregandoSessao(false));
+  }, []);
 
   const login = async (email, senha) => {
     const { data } = await api.post('/auth/login', { email, senha });
@@ -47,7 +63,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, registro, logout }}>
+    <AuthContext.Provider value={{ user, carregandoSessao, login, registro, logout }}>
       {children}
     </AuthContext.Provider>
   );

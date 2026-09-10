@@ -6,7 +6,7 @@ import { protect } from '../middleware/auth.js';
 const router = express.Router();
 
 const gerarToken = (user) => jwt.sign(
-  { id: user._id, nome: user.nome, email: user.email, role: user.role },
+  { id: user._id, nome: user.nome, email: user.email, role: user.role, tokenVersion: user.tokenVersion },
   process.env.JWT_SECRET,
   { expiresIn: process.env.JWT_EXPIRES || '7d' }
 );
@@ -14,11 +14,13 @@ const gerarToken = (user) => jwt.sign(
 // POST /api/auth/registro
 router.post('/registro', async (req, res) => {
   try {
-    const { nome, email, senha, role } = req.body;
+    const { nome, email, senha } = req.body;
     if (!nome || !email || !senha) return res.status(400).json({ error: 'Preencha nome, email e senha' });
-    const existe = await User.findOne({ email });
+    if (String(senha).length < 8) return res.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres' });
+    const emailNormalizado = String(email).trim().toLowerCase();
+    const existe = await User.findOne({ email: emailNormalizado });
     if (existe) return res.status(400).json({ error: 'Email ja cadastrado' });
-    const user = await User.create({ nome, email, senha, role: role || 'usuario' });
+    const user = await User.create({ nome: String(nome).trim(), email: emailNormalizado, senha, role: 'usuario' });
     res.status(201).json({ token: gerarToken(user), user: { id: user._id, nome: user.nome, email: user.email, role: user.role } });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -29,7 +31,7 @@ router.post('/registro', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
-    const user = await User.findOne({ email }).select('+senha');
+    const user = await User.findOne({ email: String(email).trim().toLowerCase() }).select('+senha');
     if (!user) return res.status(401).json({ error: 'Credenciais invalidas' });
     const ok = await user.compararSenha(senha);
     if (!ok) return res.status(401).json({ error: 'Credenciais invalidas' });
@@ -42,8 +44,13 @@ router.post('/login', async (req, res) => {
 
 // GET /api/auth/me
 router.get('/me', protect, async (req, res) => {
-  const user = await User.findById(req.user.id);
-  res.json({ user });
+  try {
+    const user = await User.findById(req.user.id).select('-senha');
+    if (!user) return res.status(404).json({ error: 'Usuario nao encontrado' });
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ error: 'Nao foi possivel carregar o usuario' });
+  }
 });
 
 export default router;

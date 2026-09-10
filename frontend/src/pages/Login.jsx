@@ -5,8 +5,8 @@ import { useAuth } from '../context/AuthContext.jsx';
 export default function Login() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@sienge.local');
-  const [senha, setSenha] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
 
@@ -44,9 +44,6 @@ export default function Login() {
             {carregando ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
-        <p style={{ marginTop: 16, fontSize: 12, color: '#95a5a6', textAlign: 'center' }}>
-          Padrão: admin@sienge.local / admin123 (rode o seed no backend)
-        </p>
       </div>
     </div>
   );
